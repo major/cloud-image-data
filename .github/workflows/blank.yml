@@ -1,0 +1,33 @@
+name: Quick test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_DEFAULT_OUTPUT: json
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      - name: Configure Aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::911986281031:role/github-actions-aws-images
+          role-duration-seconds: 900
+          aws-region: us-east-2
+          
+      - name: Test authentication
+        run: aws sts get-caller-identity
