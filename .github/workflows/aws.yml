@@ -1,4 +1,4 @@
-name: Quick test
+name: AWS Actions
 
 on:
   push:
@@ -13,17 +13,17 @@ permissions:
 
 env:
   AWS_DEFAULT_OUTPUT: json
+  AWS_PAGER: ""
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Clone repository
+        uses: actions/checkout@v3
 
-      - name: Configure Aws credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
           role-to-assume: arn:aws:iam::911986281031:role/github-actions-aws-images
           role-duration-seconds: 900
@@ -31,3 +31,6 @@ jobs:
           
       - name: Test authentication
         run: aws sts get-caller-identity
+
+      - name: Run image download script
+        run: ./getimages.sh
