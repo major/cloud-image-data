@@ -1,16 +1,13 @@
 #!/bin/bash
-set -euxo pipefail
+set -euo pipefail
 
 aws ec2 describe-regions --filters Name=opt-in-status,Values=opted-in,opt-in-not-required \
     | jq -r '.Regions[].RegionName' | sort > regions.txt
 
 for REGION in $(cat regions.txt); do
   aws --region=${REGION} ec2 describe-images \
-    --filters Name=is-public,Values=true \
-    | jq '.Images | sort_by(.CreationDate)' > ${REGION}.json &
+    --filters Name=is-public,Values=true > ${REGION}.json
 done
-
-wait
 
 xz -T0 -9 -v *.json
 ls -alh
