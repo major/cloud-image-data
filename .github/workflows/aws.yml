@@ -27,7 +27,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           role-to-assume: arn:aws:iam::911986281031:role/github-actions-aws-images
-          role-duration-seconds: 900
+          role-duration-seconds: 1800
           aws-region: us-east-2
           
       - name: Test authentication
