@@ -10,5 +10,7 @@ for REGION in $(cat regions.txt); do
     | jq '.Images | sort_by(.CreationDate)' > ${REGION}.json &
 done
 
+wait
+
 xz -T0 -9 -v *.json
 ls -alh
