@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euxo pipefail
 
 aws ec2 describe-regions --filters Name=opt-in-status,Values=opted-in,opt-in-not-required \
     | jq -r '.Regions[].RegionName' | sort > regions.txt
